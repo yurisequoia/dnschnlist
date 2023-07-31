@@ -7,18 +7,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-#       - uses: actions/checkout@v3
-#       - name: Make DNS List
-#         run: |
-#           wget 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf'
-#           wget 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/apple.china.conf'
-#           make smartdns-domain-rules
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
+      - uses: actions/checkout@v3
+      - name: Make DNS List
         run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+          cd ${{ github.workspace }}
+          wget 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf'
+          wget 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/apple.china.conf'
+          make smartdns-domain-rules
+          ls
