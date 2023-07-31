@@ -12,4 +12,4 @@ smartdns-domain-rules: raw
 	sed -e "s|\(.*\)|domain-rules /\1/ -speed-check-mode $(SMARTDNS_SPEEDTEST_MODE) -nameserver $(SERVER)|" apple.china.raw.txt > apple.china.domain.smartdns.conf
 
 clean:
-	rm -f {accelerated-domains,google,apple}.china.*.conf *.smartdns.conf {accelerated-domains,google,apple}.china.raw.txt dnscrypt-proxy-forwarding-rules.txt
+	rm -f {accelerated-domains,google,apple}.china.*.conf {accelerated-domains,google,apple}.china.conf *.smartdns.conf {accelerated-domains,google,apple}.china.raw.txt dnscrypt-proxy-forwarding-rules.txt
