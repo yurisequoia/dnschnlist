@@ -10,8 +10,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Make DNS List
         run: |
-          cd ${{ github.workspace }}
+          cp ${{ github.workspace }}/Makefile .
           wget -nv 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf'
           wget -nv 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/apple.china.conf'
-          make smartdns-domain-rules
-          ls
+          make smartdns-domain-rules && cp *.smartdns.conf ${{ github.workspace }}/
+          ls ${{ github.workspace }}
