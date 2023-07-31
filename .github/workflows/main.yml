@@ -1,0 +1,5 @@
+name: dnslist-update
+on:
+  workflow_dispatch:
+  schedule:
+  - cron: "0 16 * * *"
