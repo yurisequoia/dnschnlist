@@ -3,3 +3,13 @@ on:
   workflow_dispatch:
   schedule:
   - cron: "0 16 * * *"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Make DNS List
+        run: |
+          wget 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf'
+          wget 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/apple.china.conf'
+          make smartdns-domain-rules
