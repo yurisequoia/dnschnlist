@@ -19,8 +19,13 @@ jobs:
           wget -nv 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf'
           wget -nv 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/apple.china.conf'
           make smartdns-domain-rules && ls
-      - name: GitHub Commit & Push
-        uses: actions-js/push@v1.4
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m "Add changes: $(date +'%Y-%m-%dT%TZ')"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: 'master'
+          branch: ${{ github.ref }}
