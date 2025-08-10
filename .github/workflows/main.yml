@@ -22,6 +22,7 @@ jobs:
           wget -nv 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf'
           wget -nv 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/apple.china.conf'
           make smartdns-domain-rules && ls
+          echo "test" > test.txt
 
       - name: Commit and Push changes
         run: |
