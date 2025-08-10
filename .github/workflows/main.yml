@@ -16,15 +16,12 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
-      - name: Download DNS lists
-        run: |
-          wget -nv https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/{accelerated-domains.china.conf,apple.china.conf}
-
-      - name: Build DNS list with Makefile
+      - name: Make DNS List
         run: |
           make clean
-          make smartdns-domain-rules
-          ls -l
+          wget -nv 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf'
+          wget -nv 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/apple.china.conf'
+          make smartdns-domain-rules && ls
 
       - name: Commit and Push changes
         run: |
