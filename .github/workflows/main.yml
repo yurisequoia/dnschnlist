@@ -1,26 +1,41 @@
 name: dnslist-update
+
 on:
   workflow_dispatch:
   schedule:
-  - cron: "0 16 * * *"
+    - cron: "0 16 * * *"
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
-      - name: Make DNS List
+
+      - name: Download DNS lists
+        run: |
+          wget -nv https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/{accelerated-domains.china.conf,apple.china.conf}
+
+      - name: Build DNS list with Makefile
         run: |
           make clean
-          wget -nv 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf'
-          wget -nv 'https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/apple.china.conf'
-          make smartdns-domain-rules && ls
-      - name: GitHub Commit & Push
-        uses: actions-js/push@v1.4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          make smartdns-domain-rules
+          ls -l
+
+      - name: Commit and Push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update DNS lists [skip ci]"
+            git push origin HEAD:${{ github.ref_name }}
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
